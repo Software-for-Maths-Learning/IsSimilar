@@ -192,6 +192,18 @@ class TestEvaluationFunction(unittest.TestCase):
 
         self.assertEqual(response.get("is_correct"), False)
 
+    def test_range_in_answer(self):
+        response = 1e6
+        params = {}
+
+        answer = [1e5,3e7]
+        result = evaluation_function(response, answer,params)
+        self.assertEqual(result.get("is_correct"), True)
+
+        answer = [1e5,5e5]
+        result = evaluation_function(response, answer,params)
+        self.assertEqual(result.get("is_correct"), False)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -19,12 +19,16 @@ def evaluation_function(response, answer, params) -> dict:
     to output the grading response.
     """
 
-    rtol = params.get("rtol", 0)
-    atol = params.get("atol", 0)
+    if isinstance(answer, list):
+        rtol = 0
+        atol = (answer[1]-answer[0])/2
+        answer = (answer[1]+answer[0])/2
+    else:
+        rtol = params.get("rtol", 0)
+        atol = params.get("atol", 0)
 
     is_correct = None
     real_diff = None
-
     real_diff = abs(response - answer)
     allowed_diff = atol + rtol * abs(answer)
     is_correct = real_diff <= allowed_diff
