@@ -1,3 +1,5 @@
+from numpy import spacing
+
 def evaluation_function(response, answer, params) -> dict:
     """
     Function used to grade a student response.
@@ -27,6 +29,7 @@ def evaluation_function(response, answer, params) -> dict:
 
     real_diff = abs(response - answer)
     allowed_diff = atol + rtol * abs(answer)
+    allowed_diff += spacing(answer)
     is_correct = real_diff <= allowed_diff
 
     return {

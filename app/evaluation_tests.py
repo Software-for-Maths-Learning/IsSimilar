@@ -192,6 +192,25 @@ class TestEvaluationFunction(unittest.TestCase):
 
         self.assertEqual(response.get("is_correct"), False)
 
+    def test_possible_bug_with_atol(self):
+        response_low = 15.7
+        response_high = 15.9
+        response_under = 15.6999999
+        response_over = 15.90000001
+        answer = 15.8
+        params = {"atol": 0.1}
+
+        result_low = evaluation_function(response_low, answer, params)
+        result_high = evaluation_function(response_high, answer, params)
+
+        self.assertEqual(result_low.get("is_correct"), True)
+        self.assertEqual(result_high.get("is_correct"), True)
+
+        result_under = evaluation_function(response_under, answer, params)
+        result_over = evaluation_function(response_over, answer, params)
+
+        self.assertEqual(result_under.get("is_correct"), False)
+        self.assertEqual(result_over.get("is_correct"), False)
 
 if __name__ == "__main__":
     unittest.main()
