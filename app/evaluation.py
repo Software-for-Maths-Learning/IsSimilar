@@ -27,13 +27,25 @@ def evaluation_function(response, answer, params) -> dict:
     is_correct = None
     real_diff = None
 
-    real_diff = abs(response - answer)
+    if not (isinstance(answer, int) or isinstance(answer, float)):
+        raise Exception("Answer must be a number.")
+
+    real_diff = None
     allowed_diff = atol + rtol * abs(answer)
     allowed_diff += spacing(answer)
-    is_correct = bool(real_diff <= allowed_diff)
+    is_correct = False
+    feedback = ""
+    if not (isinstance(response, int) or isinstance(response, float)):
+        feedback = "Please enter a number."
+    else:
+        real_diff = abs(response - answer)
+        allowed_diff = atol + rtol * abs(answer)
+        allowed_diff += spacing(answer)
+        is_correct = bool(real_diff <= allowed_diff)
 
     return {
         "is_correct": is_correct,
         "real_diff": real_diff,
         "allowed_diff": allowed_diff,
+        "feedback": feedback,
     }
