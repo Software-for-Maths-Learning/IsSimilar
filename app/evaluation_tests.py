@@ -212,5 +212,37 @@ class TestEvaluationFunction(unittest.TestCase):
         self.assertEqual(result_under.get("is_correct"), False)
         self.assertEqual(result_over.get("is_correct"), False)
 
+    def test_answer_is_not_number(self):
+        body = {
+            "response": 2,
+            "answer": "two",
+            "params": {
+                "rtol": 0.2
+            },
+        }
+
+        self.assertRaises(
+            Exception,
+            evaluation_function,
+            body["response"],
+            body["answer"],
+            {},
+        )
+
+    def test_response_is_not_number(self):
+        body = {
+            "response": "two",
+            "answer": 2,
+            "params": {
+                "rtol": 0.2
+            },
+        }
+
+        response = evaluation_function(body['response'], body['answer'],
+                                       body.get('params', {}))
+
+        self.assertEqual(response.get("is_correct"), False)
+        self.assertEqual("Please enter a number." in response.get("feedback"), True)
+
 if __name__ == "__main__":
     unittest.main()
